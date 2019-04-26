@@ -57,7 +57,7 @@ export default {
   },
   async mounted() {
     try {
-      const res = await Api.instance().get("review");
+      const res = await Api.instance().get("review/T1234567");
       console.log(res.data);
       if (res.status === 200 || res.status === 304) {
         this.allReviews = res.data[0].all_reviews;
