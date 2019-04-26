@@ -5,11 +5,8 @@
       <div class="percentages">
         <div>
           <h5>Reviews by type</h5>
-          <div
-            v-for="item in calculatePercentage(reviewType)"
-            :key="item.id"
-          >
-            <p>{{item.id}} - {{item.percent}}</p>
+          <div v-for="item in calculatePercentage(reviewType)" :key="item.id">
+            <p>{{ item.id }} - {{ item.percent }}</p>
           </div>
         </div>
         <div>
@@ -18,16 +15,13 @@
             v-for="item in calculatePercentage(reviewSources)"
             :key="item.id"
           >
-            <p>{{item.id}} - {{item.percent}}</p>
+            <p>{{ item.id }} - {{ item.percent }}</p>
           </div>
         </div>
         <div>
           <h5>All reviews</h5>
-          <div
-            v-for="item in calculatePercentage(allReviews)"
-            :key="item.id"
-          >
-            <p>{{item.id}} - {{item.percent}}</p>
+          <div v-for="item in calculatePercentage(allReviews)" :key="item.id">
+            <p>{{ item.id }} - {{ item.percent }}</p>
           </div>
         </div>
       </div>
@@ -50,10 +44,8 @@
             :options="options.reviewType"
           />
           <p>Reviews by source</p>
-
         </div>
         <div>
-
           <vue-chart
             :data="extractData(this.allReviews)"
             type="pie"
@@ -128,7 +120,7 @@ export default {
     calculatePercentage(value) {
       let sum = 0;
       let arr = [];
-      const total = value.map(item => {
+      value.map(item => {
         sum += item.count;
       });
       value.map(item => {
@@ -181,7 +173,7 @@ export default {
     line-height: 1.5;
     text-align: left;
     &::after {
-      content: "%"
+      content: "%";
     }
     &::first-letter {
       text-transform: uppercase;
