@@ -1,31 +1,66 @@
 <template>
   <div class="home">
-    <div class="pie-chart">
-      <div>
-        <vue-chart
-          :data="extractData(this.reviewType)"
-          type="pie"
-          :options="options.reviewType"
-        />
-        <p>Product review by type</p>
+    <div class="chart-wrapper">
+      <h4>Percentages</h4>
+      <div class="percentages">
+        <div>
+          <h5>Reviews by type</h5>
+          <div
+            v-for="item in calculatePercentage(reviewType)"
+            :key="item.id"
+          >
+            <p>{{item.id}} - {{item.percent}}</p>
+          </div>
+        </div>
+        <div>
+          <h5>Reviews by source</h5>
+          <div
+            v-for="item in calculatePercentage(reviewSources)"
+            :key="item.id"
+          >
+            <p>{{item.id}} - {{item.percent}}</p>
+          </div>
+        </div>
+        <div>
+          <h5>All reviews</h5>
+          <div
+            v-for="item in calculatePercentage(allReviews)"
+            :key="item.id"
+          >
+            <p>{{item.id}} - {{item.percent}}</p>
+          </div>
+        </div>
       </div>
-      <div>
-        <vue-chart
-          :data="extractData(this.reviewSources)"
-          type="pie"
-          :options="options.reviewType"
-        />
-        <p>Product review by type</p>
+    </div>
+    <div class="chart-wrapper">
+      <h4>Pie Chart: Hover over each segment to see it's value</h4>
+      <div class="pie-chart">
+        <div>
+          <vue-chart
+            :data="extractData(this.reviewType)"
+            type="pie"
+            :options="options.reviewType"
+          />
+          <p>Reviews by type</p>
+        </div>
+        <div>
+          <vue-chart
+            :data="extractData(this.reviewSources)"
+            type="pie"
+            :options="options.reviewType"
+          />
+          <p>Reviews by source</p>
 
-      </div>
-      <div>
+        </div>
+        <div>
 
-        <vue-chart
-          :data="extractData(this.allReviews)"
-          type="pie"
-          :options="options.reviewType"
-        />
-        <p>Ratio of each unique review</p>
+          <vue-chart
+            :data="extractData(this.allReviews)"
+            type="pie"
+            :options="options.reviewType"
+          />
+          <p>All reviews</p>
+        </div>
       </div>
     </div>
   </div>
@@ -49,8 +84,7 @@ export default {
         reviewType: {
           legend: {
             display: false
-          },
-          
+          }
         }
       }
     };
@@ -77,17 +111,34 @@ export default {
           {
             data: reviewData,
             backgroundColor: [
-              "rgba(255, 99, 132, 0.9)",
-              "rgba(54, 162, 235, 0.9)",
+              "rgba(90, 232, 115, 0.9)",
+              "rgba(100, 112, 235, 0.9)",
               "rgba(255, 206, 86, 0.9)",
               "rgba(75, 192, 192, 0.9)",
+              "rgba(100, 210, 165, 0.9)",
               "rgba(153, 102, 255, 0.9)",
+              "rgba(51, 107, 70, 0.9)",
               "rgba(255, 159, 64, 0.9)"
             ]
           }
         ]
       };
       return returnData;
+    },
+    calculatePercentage(value) {
+      let sum = 0;
+      let arr = [];
+      const total = value.map(item => {
+        sum += item.count;
+      });
+      value.map(item => {
+        let data = {
+          id: item._id,
+          percent: ((item.count / sum) * 100).toFixed(2)
+        };
+        arr.push(data);
+      });
+      return arr;
     }
   }
 };
@@ -95,22 +146,57 @@ export default {
 
 <style lang="scss" scoped>
 .home {
-  height: 100vh;
-  width: 100vw;
+  min-height: 100vh;
+  padding-top: 10rem;
+  width: 100%;
   display: flex;
+  flex-direction: column;
   background-image: url("../assets/svgs/vector1.svg");
   background-repeat: no-repeat;
-  background-position: top 0px right 0px;
+  overflow: hidden;
+  background-position: top -50px right 0px;
+}
+.chart-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 .pie-chart {
-  margin-top: 8rem;
-  padding: 10%;
-  width: 100%;
+  padding: 5%;
+  padding-top: 0rem;
+  justify-content: space-around;
+  height: 200px;
   display: flex;
   > div {
     display: flex;
+    width: 30%;
     flex-direction: column;
-    width: 100%;
   }
+}
+.percentages {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 3rem;
+  p {
+    line-height: 1.5;
+    text-align: left;
+    &::after {
+      content: "%"
+    }
+    &::first-letter {
+      text-transform: uppercase;
+    }
+  }
+}
+h4 {
+  font-size: 1.5rem;
+  font-weight: normal;
+  margin-bottom: 0.5rem;
+}
+h5 {
+  font-size: 1.3rem;
+  font-weight: normal;
+  margin-bottom: 0.5rem;
+  text-align: left;
 }
 </style>
