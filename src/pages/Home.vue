@@ -1,17 +1,23 @@
 <template>
-  <div class="home" v-show="showPage">
+  <div
+    class="home"
+    v-show="showPage"
+  >
     <div class="chart-wrapper">
       <h4>Percentages</h4>
       <div class="percentages">
-        <div>
+        <div class="types">
           <h5>Reviews by type</h5>
-          <div v-for="item in calculatePercentage(reviewType)" :key="item.id">
+          <div
+            v-for="item in calculateTotal(reviewType)"
+            :key="item.id"
+          >
             <p>
-              <span>{{ item.id }}</span> {{ item.percent }}
+              <span>{{ item.id }}</span> {{ item.count }}
             </p>
           </div>
         </div>
-        <div>
+        <div class="sources">
           <h5>Reviews by source</h5>
           <div
             v-for="item in calculatePercentage(reviewSources)"
@@ -22,9 +28,12 @@
             </p>
           </div>
         </div>
-        <div>
+        <div class="all">
           <h5>All reviews</h5>
-          <div v-for="item in calculatePercentage(allReviews)" :key="item.id">
+          <div
+            v-for="item in calculatePercentage(allReviews)"
+            :key="item.id"
+          >
             <p>
               <span>{{ item.id }}</span> {{ item.percent }}
             </p>
@@ -140,6 +149,21 @@ export default {
         arr.push(data);
       });
       return arr;
+    },
+    calculateTotal(value) {
+      let sum = 0;
+      let arr = [];
+      value.map(item => {
+        sum += item.count;
+      });
+      value.map(item => {
+        let data = {
+          id: item._id,
+          count: item.count
+        };
+        arr.push(data);
+      });
+      return arr;
     }
   }
 };
@@ -186,6 +210,13 @@ p {
     box-shadow: 0px 0px 20px #e5e5e5;
     padding: 1.5rem 1.5rem 3rem 1.5rem;
     width: 25%;
+  }
+  .types {
+    p {
+      &::after {
+        content: "";
+      }
+    }
   }
   p {
     line-height: 1.5;
