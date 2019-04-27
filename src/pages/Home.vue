@@ -1,17 +1,11 @@
 <template>
-  <div
-    class="home"
-    v-show="showPage"
-  >
+  <div class="home" v-show="showPage">
     <div class="chart-wrapper">
-      <h4>Percentages</h4>
+      <h4 class="white-header">Percentages</h4>
       <div class="percentages">
         <div class="types">
           <h5>Reviews by type</h5>
-          <div
-            v-for="item in calculateTotal(reviewType)"
-            :key="item.id"
-          >
+          <div v-for="item in calculateTotal(reviewType)" :key="item.id">
             <p>
               <span>{{ item.id }}</span> {{ item.count }}
             </p>
@@ -30,10 +24,7 @@
         </div>
         <div class="all">
           <h5>All reviews</h5>
-          <div
-            v-for="item in calculatePercentage(allReviews)"
-            :key="item.id"
-          >
+          <div v-for="item in calculatePercentage(allReviews)" :key="item.id">
             <p>
               <span>{{ item.id }}</span> {{ item.percent }}
             </p>
@@ -151,11 +142,7 @@ export default {
       return arr;
     },
     calculateTotal(value) {
-      let sum = 0;
       let arr = [];
-      value.map(item => {
-        sum += item.count;
-      });
       value.map(item => {
         let data = {
           id: item._id,
@@ -170,24 +157,34 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+p,
+h4,
+h5 {
+  color: #545454;
+}
 p {
   font-size: 1rem;
 }
 .home {
   min-height: 100vh;
-  padding-top: 10rem;
+  padding-top: 3rem;
   width: 100%;
   display: flex;
   flex-direction: column;
-  background-image: url("../assets/svgs/vector1.svg");
+  background-image: url("../assets/svgs/vector.svg");
   background-repeat: no-repeat;
   overflow: hidden;
-  background-position: top -50px right 0px;
+  background-size: contain;
+
+  background-position: top 0px right 0px left 0px;
 }
 .chart-wrapper {
   width: 100%;
   display: flex;
   flex-direction: column;
+  .white-header {
+    color: white;
+  }
 }
 .pie-chart {
   padding: 5%;
@@ -206,8 +203,9 @@ p {
   justify-content: space-around;
   margin-bottom: 3rem;
   > div {
+    background-color: white;
     border-radius: 20px;
-    box-shadow: 0px 0px 20px #e5e5e5;
+    box-shadow: 0px 0px 20px #00000048;
     padding: 1.5rem 1.5rem 3rem 1.5rem;
     width: 25%;
   }
@@ -239,7 +237,7 @@ p {
 h4 {
   font-size: 1.5rem;
   font-weight: normal;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
 }
 h5 {
   font-size: 1.3rem;
