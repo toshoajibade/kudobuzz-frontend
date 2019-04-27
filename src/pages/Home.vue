@@ -1,12 +1,14 @@
 <template>
-  <div class="home">
+  <div class="home" v-show="showPage">
     <div class="chart-wrapper">
       <h4>Percentages</h4>
       <div class="percentages">
         <div>
           <h5>Reviews by type</h5>
           <div v-for="item in calculatePercentage(reviewType)" :key="item.id">
-            <p>{{ item.id }} - {{ item.percent }}</p>
+            <p>
+              <span>{{ item.id }}</span> {{ item.percent }}
+            </p>
           </div>
         </div>
         <div>
@@ -15,13 +17,17 @@
             v-for="item in calculatePercentage(reviewSources)"
             :key="item.id"
           >
-            <p>{{ item.id }} - {{ item.percent }}</p>
+            <p>
+              <span>{{ item.id }}</span> {{ item.percent }}
+            </p>
           </div>
         </div>
         <div>
           <h5>All reviews</h5>
           <div v-for="item in calculatePercentage(allReviews)" :key="item.id">
-            <p>{{ item.id }} - {{ item.percent }}</p>
+            <p>
+              <span>{{ item.id }}</span> {{ item.percent }}
+            </p>
           </div>
         </div>
       </div>
@@ -72,6 +78,7 @@ export default {
       allReviews: [],
       reviewType: [],
       reviewSources: [],
+      showPage: false,
       options: {
         reviewType: {
           legend: {
@@ -91,6 +98,8 @@ export default {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      this.showPage = true;
     }
   },
   methods: {
@@ -137,6 +146,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+p {
+  font-size: 1rem;
+}
 .home {
   min-height: 100vh;
   padding-top: 10rem;
@@ -169,14 +181,27 @@ export default {
   display: flex;
   justify-content: space-around;
   margin-bottom: 3rem;
+  > div {
+    border-radius: 20px;
+    box-shadow: 0px 0px 20px #e5e5e5;
+    padding: 1.5rem 1.5rem 3rem 1.5rem;
+    width: 25%;
+  }
   p {
     line-height: 1.5;
     text-align: left;
+    padding: 0.75rem 0rem;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 0.5px solid rgb(236, 236, 236);
     &::after {
       content: "%";
     }
-    &::first-letter {
-      text-transform: uppercase;
+    span:first-child {
+      margin-right: auto;
+      &::first-letter {
+        text-transform: uppercase;
+      }
     }
   }
 }
@@ -188,7 +213,8 @@ h4 {
 h5 {
   font-size: 1.3rem;
   font-weight: normal;
-  margin-bottom: 0.5rem;
+  padding-bottom: 0.75rem;
   text-align: left;
+  border-bottom: 0.5px solid rgb(236, 236, 236);
 }
 </style>
